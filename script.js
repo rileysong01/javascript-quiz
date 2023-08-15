@@ -16,8 +16,8 @@ var MCQuestionBank = [
     { q: "fruit?", a1: "?", a2: "apple", a3: "?", a4: "cat", aCorrect: "apple" },
     {q: "pompompurin?", a1: "fat", a2: "huh", a3: "skinny", a4: "hehe", aCorrect: "fat"},
     {q: "hello kitty's nickname?", a1:"HK", a2:"stinky", a3: "daniel", a4: "kitty", aCorrect: "kitty"},
-    {q: "pompompurin?", a1: "fat", a2: "huh", a3: "skinny", a4: "hehe", aCorrect: "fat"},
     {q: "name of the imp with black ears?", a1:"crumi", a2:"calamity", a3: "kuromi", a4: "kuropi", aCorrect: "kuromi"}
+    {q: "when is kuromis birthday", a1:"jan 1", a2:"dec 25", a3: "oct 17", a4: "october 31", aCorrect: "october 31"}
 ]
 var countdownTimer;
 
@@ -29,16 +29,17 @@ function startQuiz() {
     countdownTimer = 200;
     questionNumber = 0;
     score = 0;
-    nextQuestion();
+    nextMCQuestion();
 }
 
-function nextQuestion() {
+function nextMCQuestion() {
     clearQuestion();
     if (questionNumber < MCQuestionBank.length) {
         MCQuestionSetUp(questionNumber);
         questionNumber++;
     } else {
         console.log("move on to short answer!")
+        console.log(score);
     }
 }
 
@@ -82,7 +83,7 @@ var MCQuestionSetUp = function(questionNumber) {
         } else {
             resultEl.textContent = "Incorrect";
         }
-        setTimeout(nextQuestion, 1000);
+        setTimeout(nextMCQuestion, 1000);
     }
 }
 
