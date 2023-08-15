@@ -2,10 +2,14 @@ var startButtonEl = document.querySelector("#startButton");
 var MCAnswersEl = document.querySelector("#MCAnswers")
 var promptEl = document.querySelector("#prompt")
 var ulEl = document.querySelector("ul")
+var resultEl = document.querySelector("#result")
 var liEl1;
 var liEl2;
 var liEl3;
 var liEl4;
+var scoreEl = document.querySelector("#score")
+var score = 0;
+var questionNumber = 0;
 
 var MCQuestionBank = [
     { q: "1+1?", a1: "8", a2: "4", a3: "9", a4: "2", aCorrect: "2" },
@@ -13,7 +17,6 @@ var MCQuestionBank = [
     // {q: "pompompurin?", a: "fat"},
     // {q: "hello kitty?", a: "kitty"}
 ]
-
 var countdownTimer;
 
 //click start button to start quiz
@@ -22,18 +25,30 @@ startButtonEl.addEventListener("click", startQuiz)
 function startQuiz() {
     startButtonEl.style.display = "none";
     countdownTimer = 200;
-
-    MCQuestionSetUp(0);
-    // MCQuestionSetUp(1);
-
+    questionNumber = 0;
+    score = 0;
+    nextQuestion();
 }
 
+function nextQuestion() {
+    clearQuestion();
+    if (questionNumber < MCQuestionBank.length) {
+        MCQuestionSetUp(questionNumber);
+        questionNumber++;
+    } else {
+        console.log("move on to short answer!")
+    }
+}
+
+function clearQuestion() {
+    promptEl.textContent = "";
+    ulEl.innerHTML = "";
+    resultEl.textContent = ""
+}
 //timer 
 
-//questions (multiple choice, short answer)
-//render MC options as li
 
-var MCQuestionSetUp = function (questionNumber) {
+var MCQuestionSetUp = function(questionNumber) {
     promptEl.textContent = MCQuestionBank[questionNumber].q;
     var liEl1 = document.createElement("li");
     var liEl2 = document.createElement("li");
@@ -50,41 +65,25 @@ var MCQuestionSetUp = function (questionNumber) {
     ulEl.appendChild(liEl3);
     ulEl.appendChild(liEl4);
 
-    liEl1.addEventListener("click", function() {
-        if (liEl1.textContent === MCQuestionBank[questionNumber].aCorrect) {
-            console.log("yay")
-        } else {
-            console.log("nay")
-        }
-    })
+    liEl1.addEventListener("click", checkAnswer);
+    liEl2.addEventListener("click", checkAnswer);
+    liEl3.addEventListener("click", checkAnswer);
+    liEl4.addEventListener("click", checkAnswer);
 
-    liEl2.addEventListener("click", function() {
-        if (liEl2.textContent === MCQuestionBank[questionNumber].aCorrect) {
-            console.log("yay")
-        } else {
-            console.log("nay")
-        }
-    })
+    function checkAnswer(event) {
+        var clickedElement = event.target;
+        var selectedAnswer = clickedElement.textContent;
 
-    liEl3.addEventListener("click", function() {
-        if (liEl3.textContent === MCQuestionBank[questionNumber].aCorrect) {
-            console.log("yay")
+        if (selectedAnswer === MCQuestionBank[questionNumber].aCorrect) {
+            resultEl.textContent = "Correct!";
+            score++;
         } else {
-            console.log("nay")
+            resultEl.textContent = "Incorrect";
         }
-    })
-
-    liEl4.addEventListener("click", function() {
-        if (liEl4.textContent === MCQuestionBank[questionNumber].aCorrect) {
-            console.log("yay")
-        } else {
-            console.log("nay")
-        }
-    })
+        setTimeout(nextQuestion, 1000);
+    }
 }
 
-
-// click MC answer
 
 
 //wrong answer subtracts time from clock
