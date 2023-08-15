@@ -14,8 +14,10 @@ var questionNumber = 0;
 var MCQuestionBank = [
     { q: "1+1?", a1: "8", a2: "4", a3: "9", a4: "2", aCorrect: "2" },
     { q: "fruit?", a1: "?", a2: "apple", a3: "?", a4: "cat", aCorrect: "apple" },
-    // {q: "pompompurin?", a: "fat"},
-    // {q: "hello kitty?", a: "kitty"}
+    {q: "pompompurin?", a1: "fat", a2: "huh", a3: "skinny", a4: "hehe", aCorrect: "fat"},
+    {q: "hello kitty's nickname?", a1:"HK", a2:"stinky", a3: "daniel", a4: "kitty", aCorrect: "kitty"},
+    {q: "pompompurin?", a1: "fat", a2: "huh", a3: "skinny", a4: "hehe", aCorrect: "fat"},
+    {q: "name of the imp with black ears?", a1:"crumi", a2:"calamity", a3: "kuromi", a4: "kuropi", aCorrect: "kuromi"}
 ]
 var countdownTimer;
 
