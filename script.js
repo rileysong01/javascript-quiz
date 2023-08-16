@@ -17,24 +17,31 @@ var countdownTimer;
 var timeEl = document.querySelector('#time');
 var initialsEl = document.querySelector('#initials')
 var userInitials;
+var leaderboardEl = document.querySelector('#leaderboard');
+var LeaderboardDiv = document.querySelector('#leaderboardDiv')
+
+var localScores = JSON.parse(localStorage.getItem("userScores")) || [];
 
 var MCQuestionBank = [
-    { q: "1+1?", a1: "8", a2: "4", a3: "9", a4: "2", aCorrect: "2" },
-    { q: "2+2?", a1: "100", a2: "4", a3: "200", a4: "cat", aCorrect: "apple" },
-    { q: "3+3?", a1: "6", a2: "100", a3: "200", a4: "hehe", aCorrect: "6" },
+    { q: "what is the name of rileys favoriate sanrio character?", a1: "huh", a2: "crumi", a3: "kuromi", a4: "calamity", aCorrect: "kuromi" },
+    { q: "who is hello kittys boyfriend", a1: "daniel", a2: "huh", a3: "charles", a4: "pompompurin", aCorrect: "daniel" },
+    { q: "when is kuromis birthday", a1: "huh", a2: "october 31", a3: "december 25", a4: "october 17", aCorrect: "october 31" },
 ]
 
 var SAQuestionBank = [
-    { q: "yesssss", aCorrect: "yes" },
-    { q: "nooooo", aCorrect: "no" }
+    { q: "never give up never what", aCorrect: "never back down" },
+    { q: "is pompompurin skinny or fat", aCorrect: "fat" }
 ]
 
 //click start button to start quiz
 startButtonEl.addEventListener("click", startQuiz)
 
 function startQuiz() {
-    startButtonEl.style.display = "none";
-    countdownTimer = 200;
+    startButtonEl.setAttribute("class", "hide");
+    initialsEl.innerHTML = "";
+    leaderboardEl.innerHTML= "";
+    LeaderboardDiv.setAttribute("class", "hide");
+    countdownTimer = 120;
     setTime();
     MCQuestionNumber = 0;
     SAQuestionNumber = 0;
@@ -44,13 +51,15 @@ function startQuiz() {
 
 function setTime() {
     var timerInterval = setInterval(function () {
-        countdownTimer--;
         timeEl.textContent = countdownTimer + " seconds left.";
+        countdownTimer--;
 
-        //not working
-        if (countdownTimer === 0) {
+        //timer after the final question?
+        if (countdownTimer <= 0) {
             clearInterval(timerInterval);
-    
+            timeEl.textContent = "";
+            clearQuestion();
+            endQuiz();
         }
     }, 1000);
 }
@@ -110,6 +119,7 @@ var SAQuestionSetUp = function (SAQuestionNumber) {
 }
 
 var MCQuestionSetUp = function (MCQuestionNumber) {
+    ulEl.removeAttribute("class")
     promptEl.textContent = MCQuestionBank[MCQuestionNumber].q;
     var liEl1 = document.createElement("li");
     var liEl2 = document.createElement("li");
@@ -132,6 +142,7 @@ var MCQuestionSetUp = function (MCQuestionNumber) {
     liEl4.addEventListener("click", checkAnswer);
 
     function checkAnswer(event) {
+        ulEl.setAttribute("class", "hide")
         var clickedElement = event.target;
         var selectedAnswer = clickedElement.textContent;
 
@@ -152,8 +163,11 @@ var MCQuestionSetUp = function (MCQuestionNumber) {
 
 //end of quiz (all questions answered OR timer hit 0)
 var endQuiz = function () {
+    startButtonEl.removeAttribute("class");
+    startButtonEl.textContent = "Click to play again!";
+
     promptEl.textContent = "Quiz Finished!";
-    resultEl.textContent = "your score" + score;
+    resultEl.textContent = "Your score is" + score + "! Type your name below to save your score!";
     var getInitials = document.createElement("input")
     getInitials.setAttribute("type", "text");
 
@@ -162,13 +176,26 @@ var endQuiz = function () {
     getInitials.addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
             event.preventDefault();
-            userInitials = (getInitials.value).toString();
+            userInitials = getInitials.value;
+            console.log(userInitials);
+
+            var userInfo = { player:userInitials, score: score}
+            localScores.push(userInfo);
+            localStorage.setItem("userScores", JSON.stringify(localScores));
+            renderLeaderboard();
         }
     });
-
-    console.log(userInitials);
 }
 
+var renderLeaderboard = function() {
+    LeaderboardDiv.removeAttribute("class")
+    for (var i = 0; i <localScores.length; i++) {
+
+        var liEl = document.createElement("li");
+        liEl.textContent = "player " + localScores[i].player + " got a score of " + localScores[i].score +"!";
+        leaderboardEl.append(liEl);
+    }
+}
 
 
 //type my initials and save score

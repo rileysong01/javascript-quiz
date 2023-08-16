@@ -1,23 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="sßtylesheet" href="style.css"> 
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <h1>Coding Quiz</h1>
 
-    <h2 id="prompt"> Welcome to the JavaScript quiz! Press the button and test your JavaScript knowledge!</h2>
+    <h2 id="prompt"> Welcome to the Sanrio quiz! Press the button and test your Sanrio knowledge! You have 2 minutes in total, answering a question incorrectly will subtract 10 seconds from your timer! Goodluck!</h2>
     <h2 id="countdown"></h2>
     <ul id="MCAnswers"></ul>
     <h3 id="result"></h3>
     <h3 id="time"></h3>
     <form id="input"> </form>
-    <div id="initials"></div>
-    <h3 id="score">
+    <label id="initials"></label>
+    <h3 id="score"></h3>
     <button id="startButton">Click to start!</button>
+    <div id="leaderboardDiv" class="hide">
+        <h2>History</h2>
+        <ul id="leaderboard"></ul>
+    </div>
     <script src="script.js"></script>
 </body>
+
 </html>
