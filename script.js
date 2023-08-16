@@ -1,36 +1,34 @@
 var startButtonEl = document.querySelector("#startButton");
 var MCAnswersEl = document.querySelector("#MCAnswers")
 var promptEl = document.querySelector("#prompt")
+var descriptionEl = document.querySelector("#description")
 var ulEl = document.querySelector("ul")
 var resultEl = document.querySelector("#result")
-var liEl1;
-var liEl2;
-var liEl3;
-var liEl4;
 var scoreEl = document.querySelector("#score")
-var score = 0;
+var score;
 var MCQuestionNumber;
 var SAQuestionNumber;
 var userAnswer;
 var formEl = document.querySelector("#input");
 var countdownTimer;
 var timeEl = document.querySelector('#time');
-var initialsEl = document.querySelector('#initials')
+var initialsEl = document.querySelector("#initials")
 var userInitials;
-var leaderboardEl = document.querySelector('#leaderboard');
-var LeaderboardDiv = document.querySelector('#leaderboardDiv')
+var leaderboardEl = document.querySelector("#leaderboard");
+var LeaderboardDiv = document.querySelector("#leaderboardDiv")
 
 var localScores = JSON.parse(localStorage.getItem("userScores")) || [];
 
 var MCQuestionBank = [
-    { q: "what is the name of rileys favoriate sanrio character?", a1: "huh", a2: "crumi", a3: "kuromi", a4: "calamity", aCorrect: "kuromi" },
-    { q: "who is hello kittys boyfriend", a1: "daniel", a2: "huh", a3: "charles", a4: "pompompurin", aCorrect: "daniel" },
-    { q: "when is kuromis birthday", a1: "huh", a2: "october 31", a3: "december 25", a4: "october 17", aCorrect: "october 31" },
+    { q: "What will the following code output: console.log(2 + 2);?", a1: "4", a2: "2", a3: "22", a4: "2^2", aCorrect: "4" },
+    { q: "What does the keyword 'this' refer to", a1: "all global variables", a2: "nothing", a3: "the current object or context", a4: "the previous function call", aCorrect: "the current object or context" },
+    { q: "Which keyword do you use to declare a variable", a1: "var", a2: "variable", a3: "V", a4: "v", aCorrect: "var" },
 ]
 
 var SAQuestionBank = [
-    { q: "never give up never what", aCorrect: "never back down" },
-    { q: "is pompompurin skinny or fat", aCorrect: "fat" }
+    { q: "Which data structure allow you to store an ordered collection of values? (Click enter to sumit your answer!)", aCorrect: "array" },
+    { q: "A boolean can be one of to possible values: 'true' or '_____'. (Click enter to sumit your answer!)", aCorrect: "false" },
+    { q: "In what year was JavaScript created? (Click enter to sumit your answer!)", aCorrect: "1995" }
 ]
 
 //click start button to start quiz
@@ -38,8 +36,10 @@ startButtonEl.addEventListener("click", startQuiz)
 
 function startQuiz() {
     startButtonEl.setAttribute("class", "hide");
+    timeEl.removeAttribute("class")
+    descriptionEl.setAttribute("class", "hide");
     initialsEl.innerHTML = "";
-    leaderboardEl.innerHTML= "";
+    leaderboardEl.innerHTML = "";
     LeaderboardDiv.setAttribute("class", "hide");
     countdownTimer = 120;
     setTime();
@@ -50,8 +50,11 @@ function startQuiz() {
 }
 
 function setTime() {
+    timeEl.textContent = "Timer: " + countdownTimer + "s";
+    countdownTimer--;
+
     var timerInterval = setInterval(function () {
-        timeEl.textContent = countdownTimer + " seconds left.";
+        timeEl.textContent = "Timer: " + countdownTimer + "s";
         countdownTimer--;
 
         //timer after the final question?
@@ -72,7 +75,6 @@ function nextMCQuestion() {
         MCQuestionNumber++;
     } else {
         nextSAQuestion();
-        console.log(score);
     }
 }
 
@@ -99,12 +101,13 @@ var SAQuestionSetUp = function (SAQuestionNumber) {
     promptEl.textContent = SAQuestionBank[SAQuestionNumber].q;
     var inputEl = document.createElement("input");
     inputEl.setAttribute("type", "text");
+    inputEl.id = 'inputElID';
     formEl.appendChild(inputEl)
 
     inputEl.addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
             event.preventDefault();
-            userAnswer = (inputEl.value).toString();
+            userAnswer = ((inputEl.value).toLowerCase()).trim();
             if (userAnswer === SAQuestionBank[SAQuestionNumber].aCorrect) {
                 resultEl.textContent = "Correct!";
                 score++;
@@ -122,9 +125,13 @@ var MCQuestionSetUp = function (MCQuestionNumber) {
     ulEl.removeAttribute("class")
     promptEl.textContent = MCQuestionBank[MCQuestionNumber].q;
     var liEl1 = document.createElement("li");
+    liEl1.id = "listid1"
     var liEl2 = document.createElement("li");
+    liEl2.id = "listid2"
     var liEl3 = document.createElement("li");
+    liEl3.id = "listid3"
     var liEl4 = document.createElement("li");
+    liEl4.id = "listid4"
 
     liEl1.textContent = MCQuestionBank[MCQuestionNumber].a1;
     liEl2.textContent = MCQuestionBank[MCQuestionNumber].a2;
@@ -163,13 +170,16 @@ var MCQuestionSetUp = function (MCQuestionNumber) {
 
 //end of quiz (all questions answered OR timer hit 0)
 var endQuiz = function () {
+    timeEl.setAttribute("class", "hide")
+
     startButtonEl.removeAttribute("class");
     startButtonEl.textContent = "Click to play again!";
 
     promptEl.textContent = "Quiz Finished!";
-    resultEl.textContent = "Your score is" + score + "! Type your name below to save your score!";
+    resultEl.textContent = "You scored " + score + "/" + (MCQuestionBank.length + SAQuestionBank.length) + "! Type your name to save your score!";
     var getInitials = document.createElement("input")
     getInitials.setAttribute("type", "text");
+    getInitials.id = 'initialsInput';
 
     initialsEl.appendChild(getInitials);
 
@@ -179,7 +189,7 @@ var endQuiz = function () {
             userInitials = getInitials.value;
             console.log(userInitials);
 
-            var userInfo = { player:userInitials, score: score}
+            var userInfo = { player: userInitials, score: score }
             localScores.push(userInfo);
             localStorage.setItem("userScores", JSON.stringify(localScores));
             renderLeaderboard();
@@ -187,12 +197,12 @@ var endQuiz = function () {
     });
 }
 
-var renderLeaderboard = function() {
+var renderLeaderboard = function () {
     LeaderboardDiv.removeAttribute("class")
-    for (var i = 0; i <localScores.length; i++) {
+    for (var i = 0; i < localScores.length; i++) {
 
         var liEl = document.createElement("li");
-        liEl.textContent = "player " + localScores[i].player + " got a score of " + localScores[i].score +"!";
+        liEl.textContent = "player " + localScores[i].player + " got a score of " + localScores[i].score + "!";
         leaderboardEl.append(liEl);
     }
 }

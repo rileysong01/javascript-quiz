@@ -1,3 +1,51 @@
 .hide {
     display: none;
 }
+
+#buttonDiv {
+    display: flex;
+    justify-content: center;
+}
+
+
+h1 {
+    top: 20px;
+    padding: 8px;
+}
+
+#startButton {
+    padding: 10px 20px;
+}
+
+#prompt, #description {
+    padding: 8px;
+}
+
+#time {
+    position: fixed;
+    top: 20px;
+    right: 50px;
+    border: 3px solid black;
+    background-color: rgba(246, 218, 223, 0.907);
+    padding: 8px;
+}
+
+#initialsInput, #inputElID, #results {
+    margin:8px;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#listid1, #listid2, #listid3, #listid4 {
+    text-align: center;
+    background-color: rgb(246, 245, 190) ;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-right: 650px;
+    padding: 5px 5px 5px 8px;
+
+}

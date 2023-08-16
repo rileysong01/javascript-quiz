@@ -4,22 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>JavaScript Quiz</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h1>Coding Quiz</h1>
+    <h1>JavaScript Quiz Challenge</h1>
 
-    <h2 id="prompt"> Welcome to the Sanrio quiz! Press the button and test your Sanrio knowledge! You have 2 minutes in total, answering a question incorrectly will subtract 10 seconds from your timer! Goodluck!</h2>
+    <div>
+        <h2 id="prompt"> Welcome to the JavaScript quiz!</h2>
+        <h3 id="description">Press the button and test your JavaScript knowledge! You have 2 minutes in total, answering
+            a question incorrectly will subtract 10 seconds from your timer! Goodluck!</h3>
+
+    </div>
     <h2 id="countdown"></h2>
     <ul id="MCAnswers"></ul>
-    <h3 id="result"></h3>
-    <h3 id="time"></h3>
+    <h3 id="time">Timer: 120s</h3>
     <form id="input"> </form>
+    <h3 id="result"></h3>
     <label id="initials"></label>
     <h3 id="score"></h3>
-    <button id="startButton">Click to start!</button>
+    <div id="buttonDiv">
+        <button id="startButton">Click to start!</button>
+    </div>
     <div id="leaderboardDiv" class="hide">
         <h2>History</h2>
         <ul id="leaderboard"></ul>
