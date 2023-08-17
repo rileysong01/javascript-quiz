@@ -1,3 +1,4 @@
+//declare global variables
 var startButtonEl = document.querySelector("#startButton");
 var MCAnswersEl = document.querySelector("#MCAnswers")
 var promptEl = document.querySelector("#prompt")
@@ -16,9 +17,9 @@ var initialsEl = document.querySelector("#initials")
 var userInitials;
 var leaderboardEl = document.querySelector("#leaderboard");
 var LeaderboardDiv = document.querySelector("#leaderboardDiv")
-
 var localScores = JSON.parse(localStorage.getItem("userScores")) || [];
 
+//question banks
 var MCQuestionBank = [
     { q: "What will the following code output: console.log(2 + 2);?", a1: "4", a2: "2", a3: "22", a4: "2^2", aCorrect: "4" },
     { q: "What does the keyword 'this' refer to", a1: "all global variables", a2: "nothing", a3: "the current object or context", a4: "the previous function call", aCorrect: "the current object or context" },
@@ -31,7 +32,7 @@ var SAQuestionBank = [
     { q: "In what year was JavaScript created? (Click enter to sumit your answer!)", aCorrect: "1995" }
 ]
 
-//click start button to start quiz
+//to start the quiz
 startButtonEl.addEventListener("click", startQuiz)
 
 function startQuiz() {
@@ -67,7 +68,7 @@ function setTime() {
     }, 1000);
 }
 
-//displays next MC question
+//MC question setups
 function nextMCQuestion() {
     clearQuestion();
     if (MCQuestionNumber < MCQuestionBank.length) {
@@ -76,49 +77,6 @@ function nextMCQuestion() {
     } else {
         nextSAQuestion();
     }
-}
-
-//displays next SA question
-function nextSAQuestion() {
-    clearQuestion();
-    if (SAQuestionNumber < SAQuestionBank.length) {
-        SAQuestionSetUp(SAQuestionNumber);
-        SAQuestionNumber++;
-    } else {
-        countdownTimer = 0;
-    }
-}
-
-function clearQuestion() {
-    promptEl.textContent = "";
-    ulEl.innerHTML = "";
-    resultEl.textContent = ""
-    formEl.innerHTML = "";
-}
-//timer 
-
-var SAQuestionSetUp = function (SAQuestionNumber) {
-    promptEl.textContent = SAQuestionBank[SAQuestionNumber].q;
-    var inputEl = document.createElement("input");
-    inputEl.setAttribute("type", "text");
-    inputEl.id = 'inputElID';
-    formEl.appendChild(inputEl)
-
-    inputEl.addEventListener("keydown", function (event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            userAnswer = ((inputEl.value).toLowerCase()).trim();
-            if (userAnswer === SAQuestionBank[SAQuestionNumber].aCorrect) {
-                resultEl.textContent = "Correct!";
-                score++;
-            } else {
-                resultEl.textContent = "Incorrect";
-                countdownTimer -= 10
-            }
-            setTimeout(nextSAQuestion, 1000);
-        }
-    });
-
 }
 
 var MCQuestionSetUp = function (MCQuestionNumber) {
@@ -164,11 +122,52 @@ var MCQuestionSetUp = function (MCQuestionNumber) {
     }
 }
 
+//SA question setups
+function nextSAQuestion() {
+    clearQuestion();
+    if (SAQuestionNumber < SAQuestionBank.length) {
+        SAQuestionSetUp(SAQuestionNumber);
+        SAQuestionNumber++;
+    } else {
+        countdownTimer = 0;
+    }
+}
+
+var SAQuestionSetUp = function (SAQuestionNumber) {
+    promptEl.textContent = SAQuestionBank[SAQuestionNumber].q;
+    var inputEl = document.createElement("input");
+    inputEl.setAttribute("type", "text");
+    inputEl.id = 'inputElID';
+    formEl.appendChild(inputEl)
+
+    inputEl.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            userAnswer = ((inputEl.value).toLowerCase()).trim();
+            if (userAnswer === SAQuestionBank[SAQuestionNumber].aCorrect) {
+                resultEl.textContent = "Correct!";
+                score++;
+            } else {
+                resultEl.textContent = "Incorrect";
+                countdownTimer -= 10
+            }
+            setTimeout(nextSAQuestion, 1000);
+        }
+    });
+
+}
 
 
-//wrong answer subtracts time from clock
+//clear variables between questions
+function clearQuestion() {
+    promptEl.textContent = "";
+    ulEl.innerHTML = "";
+    resultEl.textContent = ""
+    formEl.innerHTML = "";
+}
+ 
 
-//end of quiz (all questions answered OR timer hit 0)
+//finishing quiz
 var endQuiz = function () {
     timeEl.setAttribute("class", "hide")
 
@@ -197,6 +196,7 @@ var endQuiz = function () {
     });
 }
 
+//leaderboard
 var renderLeaderboard = function () {
     LeaderboardDiv.removeAttribute("class")
     for (var i = 0; i < localScores.length; i++) {
@@ -206,7 +206,3 @@ var renderLeaderboard = function () {
         leaderboardEl.append(liEl);
     }
 }
-
-
-//type my initials and save score
-//clear scores
