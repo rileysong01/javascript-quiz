@@ -28,7 +28,7 @@ var MCQuestionBank = [
 
 var SAQuestionBank = [
     { q: "Which data structure allow you to store an ordered collection of values? (Click enter to sumit your answer!)", aCorrect: "array" },
-    { q: "A boolean can be one of to possible values: 'true' or '_____'. (Click enter to sumit your answer!)", aCorrect: "false" },
+    { q: "A boolean can be one of two possible values: 'true' or '_____'. (Click enter to sumit your answer!)", aCorrect: "false" },
     { q: "In what year was JavaScript created? (Click enter to sumit your answer!)", aCorrect: "1995" }
 ]
 
@@ -118,7 +118,7 @@ var MCQuestionSetUp = function (MCQuestionNumber) {
             resultEl.textContent = "Incorrect";
             countdownTimer -= 10
         }
-        setTimeout(nextMCQuestion, 1000);
+        setTimeout(nextMCQuestion, 500);
     }
 }
 
@@ -151,7 +151,7 @@ var SAQuestionSetUp = function (SAQuestionNumber) {
                 resultEl.textContent = "Incorrect";
                 countdownTimer -= 10
             }
-            setTimeout(nextSAQuestion, 1000);
+            setTimeout(nextSAQuestion, 500);
         }
     });
 
@@ -175,7 +175,7 @@ var endQuiz = function () {
     startButtonEl.textContent = "Click to play again!";
 
     promptEl.textContent = "Quiz Finished!";
-    resultEl.textContent = "You scored " + score + "/" + (MCQuestionBank.length + SAQuestionBank.length) + "! Type your name to save your score!";
+    resultEl.textContent = "You scored " + score + "/" + (MCQuestionBank.length + SAQuestionBank.length) + "! Type your name and hit the enter key to save your score!";
     var getInitials = document.createElement("input")
     getInitials.setAttribute("type", "text");
     getInitials.id = 'initialsInput';

@@ -30,8 +30,18 @@ h1 {
     padding: 8px;
 }
 
-#initialsInput, #inputElID, #results {
+#initialsInput, #inputElID, #result {
     margin:8px;
+    margin-left: 10px;
+}
+
+#leaderboardDiv {
+    padding-right: 445px;
+    text-align: center;
+}
+
+#resultStyling {
+    margin-left: 20px;
 }
 
 ul {
@@ -45,7 +55,8 @@ ul {
     background-color: rgb(246, 245, 190) ;
     margin-top: 20px;
     margin-bottom: 20px;
-    margin-right: 650px;
-    padding: 5px 5px 5px 8px;
+    margin-right: 600px;
+    margin-left: 15px;
+    padding: 5px 5px 5px 20px;
 
 }
